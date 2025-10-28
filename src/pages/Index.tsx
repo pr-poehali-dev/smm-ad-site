@@ -380,7 +380,7 @@ const Index = () => {
           {filteredServices.map((service) => (
             <Card 
               key={service.id} 
-              className="bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 overflow-hidden group"
+              className="bg-card border-[3px] border-primary/40 hover:border-primary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 overflow-hidden group"
             >
               <div className="bg-primary/90 p-6 flex items-center justify-center">
                 <Icon name={getPlatformIcon(service.platform)} size={48} className="text-primary-foreground" />
