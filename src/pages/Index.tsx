@@ -747,34 +747,34 @@ const ReviewsCarousel = () => {
   ];
 
   return (
-    <section className=\"mt-20 mb-12\">
-      <div className=\"text-center mb-8\">
-        <h2 className=\"text-3xl font-bold text-foreground mb-2\">Отзывы клиентов</h2>
-        <p className=\"text-muted-foreground\">Более 310 положительных отзывов</p>
+    <section className="mt-20 mb-12">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-foreground mb-2">Отзывы клиентов</h2>
+        <p className="text-muted-foreground">Более 310 положительных отзывов</p>
       </div>
       
-      <div className=\"overflow-hidden\" ref={emblaRef}>
-        <div className=\"flex gap-4\" style={{ touchAction: 'pan-y' }}>
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-4" style={{ touchAction: 'pan-y' }}>
           {reviews.map((review, index) => (
             <div 
               key={index}
-              className=\"flex-[0_0_300px] min-w-0\"
+              className="flex-[0_0_300px] min-w-0"
             >
-              <Card className=\"bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 p-4 h-full\">
-                <div className=\"flex items-start gap-3\">
-                  <div className=\"w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0\">
-                    <span className=\"text-primary font-bold\">{review.name[0].toUpperCase()}</span>
+              <Card className="bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 p-4 h-full">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <span className="text-primary font-bold">{review.name[0].toUpperCase()}</span>
                   </div>
-                  <div className=\"flex-1 min-w-0\">
-                    <div className=\"flex items-center gap-2 mb-1\">
-                      <p className=\"font-semibold text-sm text-foreground truncate\">{review.name}</p>
-                      <Icon name=\"CheckCircle2\" size={14} className=\"text-primary flex-shrink-0\" />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-semibold text-sm text-foreground truncate">{review.name}</p>
+                      <Icon name="CheckCircle2" size={14} className="text-primary flex-shrink-0" />
                     </div>
-                    <p className=\"text-xs text-muted-foreground mb-2\">{review.service}</p>
-                    <p className=\"text-sm text-foreground leading-relaxed line-clamp-3\">{review.text}</p>
-                    <div className=\"flex gap-0.5 mt-2\">
+                    <p className="text-xs text-muted-foreground mb-2">{review.service}</p>
+                    <p className="text-sm text-foreground leading-relaxed line-clamp-3">{review.text}</p>
+                    <div className="flex gap-0.5 mt-2">
                       {[1,2,3,4,5].map(star => (
-                        <Icon key={star} name=\"Star\" size={12} className=\"text-primary fill-primary\" />
+                        <Icon key={star} name="Star" size={12} className="text-primary fill-primary" />
                       ))}
                     </div>
                   </div>
@@ -785,8 +785,8 @@ const ReviewsCarousel = () => {
         </div>
       </div>
       
-      <div className=\"text-center mt-6\">
-        <p className=\"text-xs text-muted-foreground\">Автоматическая прокрутка • Потяните для просмотра</p>
+      <div className="text-center mt-6">
+        <p className="text-xs text-muted-foreground">Автоматическая прокрутка • Потяните для просмотра</p>
       </div>
     </section>
   );
