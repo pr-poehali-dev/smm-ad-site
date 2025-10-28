@@ -236,17 +236,17 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-3xl font-bold text-primary mb-1">INFORMATOR MEDIA</h1>
-              <p className="text-sm text-muted-foreground">SMM-специалист</p>
+              <h1 className="text-3xl font-bold text-foreground mb-1 tracking-tight">INFORMATOR MEDIA</h1>
+              <p className="text-sm text-muted-foreground font-light">SMM-специалист</p>
             </div>
             <div className="flex items-center gap-3">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="outline" className="relative border-primary/50 hover:bg-primary hover:text-primary-foreground">
+                  <Button variant="outline" className="relative border-border/50 hover:border-primary/50 hover:bg-primary/10 transition-all duration-300">
                     <Icon name="ShoppingCart" size={20} />
                     {cart.length > 0 && (
                       <Badge className="absolute -top-2 -right-2 bg-primary text-primary-foreground px-2 py-0.5 text-xs">
@@ -346,11 +346,11 @@ const Index = () => {
               placeholder="Найти услугу..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-4 pr-12 h-12 bg-card border-primary/50 text-foreground placeholder:text-muted-foreground focus:border-primary"
+              className="pl-4 pr-12 h-12 bg-card/50 border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary/50 rounded-lg transition-all duration-300"
             />
             <Button 
               size="icon" 
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary hover:bg-primary/80 text-primary-foreground rounded-lg transition-all duration-300"
             >
               <Icon name="Search" size={20} />
             </Button>
@@ -362,10 +362,10 @@ const Index = () => {
                 key={filter}
                 variant={activeFilter === filter ? "default" : "outline"}
                 onClick={() => setActiveFilter(filter)}
-                className={`rounded-full border-primary/50 ${
+                className={`rounded-full border-border/50 ${
                   activeFilter === filter 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'bg-transparent text-primary hover:bg-primary/10'
+                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30' 
+                    : 'bg-transparent text-foreground hover:bg-primary/10 hover:border-primary/50'
                 }`}
               >
                 {filter}
@@ -380,10 +380,11 @@ const Index = () => {
           {filteredServices.map((service) => (
             <Card 
               key={service.id} 
-              className="bg-card border-[3px] border-primary/40 hover:border-primary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 overflow-hidden group"
+              className="bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden group rounded-lg"
             >
-              <div className="bg-primary/90 p-6 flex items-center justify-center">
-                <Icon name={getPlatformIcon(service.platform)} size={48} className="text-primary-foreground" />
+              <div className="bg-gradient-to-br from-card to-card/50 p-8 flex items-center justify-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-primary/20 rounded-full blur-3xl"></div>
+                <Icon name={getPlatformIcon(service.platform)} size={56} className="text-primary/80 relative z-10" />
               </div>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base font-semibold text-foreground leading-tight min-h-[3rem]">
