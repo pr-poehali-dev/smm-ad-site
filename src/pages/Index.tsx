@@ -18,6 +18,7 @@ interface Service {
   icon: string;
   category: string;
   description?: string;
+  deliveryTime: string;
 }
 
 interface CartItem {
@@ -53,15 +54,95 @@ const Index = () => {
     {
       id: 1,
       platform: 'telegram',
+      title: 'Реакции на 30 будущих постов в Телеграмм',
+      priceFrom: 500,
+      priceUnit: '₽',
+      details: 'фиксированная цена',
+      icon: 'Heart',
+      category: 'Реакции',
+      deliveryTime: '1-3 часа'
+    },
+    {
+      id: 2,
+      platform: 'telegram',
+      title: 'Просмотры Историй Телеграмм 10000',
+      priceFrom: 500,
+      priceUnit: '₽',
+      details: '50₽ за 1 000 просм.',
+      icon: 'Eye',
+      category: 'Просмотры',
+      deliveryTime: '30 минут',
+      description: 'Быстрая накрутка просмотров историй в Telegram. Качественный результат.'
+    },
+    {
+      id: 3,
+      platform: 'youtube',
+      title: 'Зрители на стрим YouTube',
+      priceFrom: 8000,
+      priceUnit: '₽',
+      details: '80 000₽ за 1 000 просм.',
+      icon: 'Users',
+      category: 'Просмотры',
+      deliveryTime: '5-10 минут',
+      description: 'Живые зрители на ваш YouTube стрим. Увеличение охвата и вовлечённости.'
+    },
+    {
+      id: 4,
+      platform: 'telegram',
+      title: 'Просмотры Телеграма РФ',
+      priceFrom: 500,
+      priceUnit: '₽',
+      details: '17₽ за 1 000 просм.',
+      icon: 'Eye',
+      category: 'Просмотры',
+      deliveryTime: '1 час'
+    },
+    {
+      id: 5,
+      platform: 'reddit',
+      title: 'Подписчики в Reddit живые люди',
+      priceFrom: 1500,
+      priceUnit: '₽',
+      details: '1 500₽ за 100 подп.',
+      icon: 'Users',
+      category: 'Подписчики',
+      deliveryTime: '12-24 часа'
+    },
+    {
+      id: 6,
+      platform: 'spotify',
+      title: 'Прослушивание вашего трека spotify',
+      priceFrom: 1000,
+      priceUnit: '₽',
+      details: 'фиксированная цена',
+      icon: 'Music',
+      category: 'Разное',
+      deliveryTime: '2-6 часов'
+    },
+    {
+      id: 7,
+      platform: 'telegram',
+      title: '100 Тысяч просмотров на ваши посты в Telegram',
+      priceFrom: 1000,
+      priceUnit: '₽',
+      details: '10₽ за 1 000 просм.',
+      icon: 'TrendingUp',
+      category: 'Просмотры',
+      deliveryTime: '30 минут'
+    },
+    {
+      id: 8,
+      platform: 'telegram',
       title: '100 Подписчиков в чат-канал МАХ',
       priceFrom: 1500,
       priceUnit: '₽',
       details: '1500₽ за 100 подп.',
       icon: 'Users',
-      category: 'Подписчики'
+      category: 'Подписчики',
+      deliveryTime: '3-6 часов'
     },
     {
-      id: 2,
+      id: 9,
       platform: 'telegram',
       title: 'Подписчики в Telegram - БЕЗ БОТОВ 100 человек',
       priceFrom: 1000,
@@ -69,10 +150,11 @@ const Index = () => {
       details: '1 000₽ за 100 подп.',
       icon: 'MessageCircle',
       category: 'Подписчики',
+      deliveryTime: '6-12 часов',
       description: 'Живые подписчики для вашего Telegram канала. Гарантия качества и безопасности аккаунта.'
     },
     {
-      id: 3,
+      id: 10,
       platform: 'vk',
       title: 'Рассылка по личным сообщениям групп ВКонтакте 100 сообщений',
       priceFrom: 1000,
@@ -80,101 +162,111 @@ const Index = () => {
       details: '1 000₽ за 100 сообщ.',
       icon: 'MessageSquare',
       category: 'Разное',
+      deliveryTime: '1-3 часа',
       description: 'Массовая рассылка сообщений по личным чатам участников групп ВКонтакте.'
     },
     {
-      id: 4,
+      id: 11,
       platform: 'vk',
       title: 'Живые подписчики в Vk - БЕЗ БОТОВ 100 человек',
       priceFrom: 1000,
       priceUnit: '₽',
       details: '10 000₽ за 1 000 подп.',
       icon: 'Users',
-      category: 'Подписчики'
+      category: 'Подписчики',
+      deliveryTime: '12-24 часа'
     },
     {
-      id: 5,
+      id: 12,
       platform: 'vk',
       title: '10,000 просмотров ваших видео в Вконтакте',
       priceFrom: 500,
       priceUnit: '₽',
       details: '5 000₽ за 100 000 просм.',
       icon: 'Eye',
-      category: 'Просмотры'
+      category: 'Просмотры',
+      deliveryTime: '2-4 часа'
     },
     {
-      id: 6,
+      id: 13,
       platform: 'telegram',
       title: 'Живые англоязычные пользователи телеграмм',
       priceFrom: 1000,
       priceUnit: '₽',
       details: '1 000₽ за 100 подп.',
       icon: 'Globe',
-      category: 'Подписчики'
+      category: 'Подписчики',
+      deliveryTime: '6-12 часов'
     },
     {
-      id: 7,
+      id: 14,
       platform: 'other',
       title: '100 живых подписчиков Trovo',
       priceFrom: 1000,
       priceUnit: '₽',
       details: '1 000₽ за 100 подп.',
       icon: 'Users',
-      category: 'Подписчики'
+      category: 'Подписчики',
+      deliveryTime: '12-24 часа'
     },
     {
-      id: 8,
+      id: 15,
       platform: 'other',
       title: '100 подписчиков для социальной сети Yappy',
       priceFrom: 1000,
       priceUnit: '₽',
       details: '1 000₽ за 100 подп.',
       icon: 'UserPlus',
-      category: 'Подписчики'
+      category: 'Подписчики',
+      deliveryTime: '6-12 часов'
     },
     {
-      id: 9,
+      id: 16,
       platform: 'youtube',
       title: '500 нажатий на кнопку В ТОП Rutube',
       priceFrom: 1000,
       priceUnit: '₽',
       details: '2 000₽ за 1 000 наж.',
-      icon: 'Heart',
-      category: 'Разное'
+      icon: 'ThumbsUp',
+      category: 'Разное',
+      deliveryTime: '1-3 часа'
     },
     {
-      id: 10,
+      id: 17,
       platform: 'telegram',
       title: '100 000 Просмотров на пост в Telegram',
       priceFrom: 500,
       priceUnit: '₽',
       details: '5₽ за 1 000 просм.',
       icon: 'Eye',
-      category: 'Просмотры'
+      category: 'Просмотры',
+      deliveryTime: '30 минут'
     },
     {
-      id: 11,
+      id: 18,
       platform: 'telegram',
       title: 'Подбор Телеграм-каналов для закупа рекламы',
       priceFrom: 25000,
       priceUnit: '₽',
       details: 'фиксированная цена',
       icon: 'Target',
-      category: 'Разное'
+      category: 'Разное',
+      deliveryTime: '24 часа'
     },
     {
-      id: 12,
+      id: 19,
       platform: 'telegram',
       title: '2000 ботов в телеграмм бота',
       priceFrom: 500,
       priceUnit: '₽',
       details: '25₽ за 100 подп.',
       icon: 'Bot',
-      category: 'Подписчики'
+      category: 'Подписчики',
+      deliveryTime: '1 час'
     }
   ];
 
-  const filters = ['Все', 'Telegram', 'VK', 'YouTube', 'Подписчики', 'Просмотры', 'Разное'];
+  const filters = ['Все', 'Telegram', 'VK', 'YouTube', 'Reddit', 'Spotify', 'Подписчики', 'Просмотры', 'Реакции', 'Разное'];
 
   const filteredServices = services.filter(service => {
     const matchesSearch = service.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -386,10 +478,11 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredServices.map((service) => (
+          {filteredServices.map((service, index) => (
             <Card 
               key={service.id} 
-              className="bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary hover:shadow-[0_0_30px_rgba(255,107,53,0.4)] hover:scale-[1.02] transition-all duration-500 overflow-hidden group rounded-lg"
+              className="bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary hover:shadow-[0_0_30px_rgba(255,107,53,0.4)] hover:scale-[1.02] transition-all duration-500 overflow-hidden group rounded-lg opacity-0 animate-fade-in"
+              style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'forwards' }}
             >
               <div className="bg-gradient-to-br from-card to-card/50 p-8 flex items-center justify-center relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-20 h-20 bg-primary/20 rounded-full blur-3xl"></div>
@@ -410,6 +503,10 @@ const Index = () => {
                     <span className="text-xl text-primary">{service.priceUnit}</span>
                   </div>
                   <p className="text-xs text-muted-foreground">{service.details}</p>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/20 rounded-lg px-3 py-2">
+                  <Icon name="Clock" size={14} className="text-primary" />
+                  <span>Выполнение: {service.deliveryTime}</span>
                 </div>
                 <div className="flex gap-2">
                   <Button 
@@ -468,10 +565,10 @@ const Index = () => {
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
-                    <Icon name="CheckCircle2" size={20} className="text-primary mt-0.5" />
+                    <Icon name="Clock" size={20} className="text-primary mt-0.5" />
                     <div>
-                      <p className="text-sm font-semibold">Быстрый старт</p>
-                      <p className="text-xs text-muted-foreground">Начало работы в течение 24 часов</p>
+                      <p className="text-sm font-semibold">Время выполнения</p>
+                      <p className="text-xs text-muted-foreground">{selectedService.deliveryTime}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
