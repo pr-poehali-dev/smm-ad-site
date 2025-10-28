@@ -235,7 +235,16 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <div className="fixed inset-0 z-0 opacity-40">
+        <img 
+          src="https://cdn.poehali.dev/projects/fb9d21c8-11db-4b4b-a3e5-7668fa83d911/files/25e408d9-04fc-4620-bc23-a85cee85a733.jpg" 
+          alt="background" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background"></div>
+      </div>
+      <div className="relative z-10">
       <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between mb-6">
@@ -246,7 +255,7 @@ const Index = () => {
             <div className="flex items-center gap-3">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="outline" className="relative border-border/50 hover:border-primary/50 hover:bg-primary/10 transition-all duration-300">
+                  <Button variant="outline" className="relative border-border/50 hover:border-primary hover:bg-primary/10 hover:shadow-[0_0_20px_rgba(255,107,53,0.3)] transition-all duration-300">
                     <Icon name="ShoppingCart" size={20} />
                     {cart.length > 0 && (
                       <Badge className="absolute -top-2 -right-2 bg-primary text-primary-foreground px-2 py-0.5 text-xs">
@@ -350,7 +359,7 @@ const Index = () => {
             />
             <Button 
               size="icon" 
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary hover:bg-primary/80 text-primary-foreground rounded-lg transition-all duration-300"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(255,107,53,0.6)] text-primary-foreground rounded-lg transition-all duration-300"
             >
               <Icon name="Search" size={20} />
             </Button>
@@ -362,10 +371,10 @@ const Index = () => {
                 key={filter}
                 variant={activeFilter === filter ? "default" : "outline"}
                 onClick={() => setActiveFilter(filter)}
-                className={`rounded-full border-border/50 ${
+                className={`rounded-full border-border/50 transition-all duration-300 ${
                   activeFilter === filter 
-                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30' 
-                    : 'bg-transparent text-foreground hover:bg-primary/10 hover:border-primary/50'
+                    ? 'bg-primary text-primary-foreground shadow-[0_0_20px_rgba(255,107,53,0.5)]' 
+                    : 'bg-transparent text-foreground hover:bg-primary/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(255,107,53,0.2)]'
                 }`}
               >
                 {filter}
@@ -380,7 +389,7 @@ const Index = () => {
           {filteredServices.map((service) => (
             <Card 
               key={service.id} 
-              className="bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 overflow-hidden group rounded-lg"
+              className="bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary hover:shadow-[0_0_30px_rgba(255,107,53,0.4)] hover:scale-[1.02] transition-all duration-500 overflow-hidden group rounded-lg"
             >
               <div className="bg-gradient-to-br from-card to-card/50 p-8 flex items-center justify-center relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-20 h-20 bg-primary/20 rounded-full blur-3xl"></div>
@@ -527,6 +536,7 @@ const Index = () => {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 };
