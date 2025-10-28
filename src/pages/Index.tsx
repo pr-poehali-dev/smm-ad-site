@@ -1,337 +1,287 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 
+interface Service {
+  id: number;
+  platform: string;
+  title: string;
+  priceFrom: number;
+  priceUnit: string;
+  details: string;
+  icon: string;
+  category: string;
+}
+
 const Index = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('Все');
+
+  const services: Service[] = [
+    {
+      id: 1,
+      platform: 'telegram',
+      title: '100 Подписчиков в чат-канал МАХ',
+      priceFrom: 1500,
+      priceUnit: '₽',
+      details: '1500₽ за 100 подп.',
+      icon: 'Users',
+      category: 'Подписчики'
+    },
+    {
+      id: 2,
+      platform: 'telegram',
+      title: 'Подписчики в Telegram - БЕЗ БОТОВ 100 человек',
+      priceFrom: 1000,
+      priceUnit: '₽',
+      details: '1 000₽ за 100 подп.',
+      icon: 'MessageCircle',
+      category: 'Подписчики'
+    },
+    {
+      id: 3,
+      platform: 'vk',
+      title: 'Рассылка по личным сообщениям групп ВКонтакте 100 сообщений',
+      priceFrom: 1000,
+      priceUnit: '₽',
+      details: '1 000₽ за 100 сообщ.',
+      icon: 'MessageSquare',
+      category: 'Разное'
+    },
+    {
+      id: 4,
+      platform: 'vk',
+      title: 'Живые подписчики в Vk - БЕЗ БОТОВ 100 человек',
+      priceFrom: 1000,
+      priceUnit: '₽',
+      details: '10 000₽ за 1 000 подп.',
+      icon: 'Users',
+      category: 'Подписчики'
+    },
+    {
+      id: 5,
+      platform: 'vk',
+      title: '10,000 просмотров ваших видео в Вконтакте',
+      priceFrom: 500,
+      priceUnit: '₽',
+      details: '5 000₽ за 100 000 просм.',
+      icon: 'Eye',
+      category: 'Просмотры'
+    },
+    {
+      id: 6,
+      platform: 'telegram',
+      title: 'Живые англоязычные пользователи телеграмм',
+      priceFrom: 1000,
+      priceUnit: '₽',
+      details: '1 000₽ за 100 подп.',
+      icon: 'Globe',
+      category: 'Подписчики'
+    },
+    {
+      id: 7,
+      platform: 'other',
+      title: '100 живых подписчиков Trovo',
+      priceFrom: 1000,
+      priceUnit: '₽',
+      details: '1 000₽ за 100 подп.',
+      icon: 'Users',
+      category: 'Подписчики'
+    },
+    {
+      id: 8,
+      platform: 'other',
+      title: '100 подписчиков для социальной сети Yappy',
+      priceFrom: 1000,
+      priceUnit: '₽',
+      details: '1 000₽ за 100 подп.',
+      icon: 'UserPlus',
+      category: 'Подписчики'
+    },
+    {
+      id: 9,
+      platform: 'youtube',
+      title: '500 нажатий на кнопку В ТОП Rutube',
+      priceFrom: 1000,
+      priceUnit: '₽',
+      details: '2 000₽ за 1 000 наж.',
+      icon: 'Heart',
+      category: 'Разное'
+    },
+    {
+      id: 10,
+      platform: 'telegram',
+      title: '100 000 Просмотров на пост в Telegram',
+      priceFrom: 500,
+      priceUnit: '₽',
+      details: '5₽ за 1 000 просм.',
+      icon: 'Eye',
+      category: 'Просмотры'
+    },
+    {
+      id: 11,
+      platform: 'telegram',
+      title: 'Подбор Телеграм-каналов для закупа рекламы',
+      priceFrom: 25000,
+      priceUnit: '₽',
+      details: 'фиксированная цена',
+      icon: 'Target',
+      category: 'Разное'
+    },
+    {
+      id: 12,
+      platform: 'telegram',
+      title: '2000 ботов в телеграмм бота',
+      priceFrom: 500,
+      priceUnit: '₽',
+      details: '25₽ за 100 подп.',
+      icon: 'Bot',
+      category: 'Подписчики'
+    }
+  ];
+
+  const filters = ['Все', 'Telegram', 'VK', 'YouTube', 'Подписчики', 'Просмотры', 'Разное'];
+
+  const filteredServices = services.filter(service => {
+    const matchesSearch = service.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter = activeFilter === 'Все' || 
+      service.platform === activeFilter.toLowerCase() ||
+      service.category === activeFilter;
+    return matchesSearch && matchesFilter;
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleOrder = (service: Service) => {
     toast({
-      title: "Заявка отправлена!",
-      description: "Мы свяжемся с вами в ближайшее время.",
+      title: "Заказ оформлен!",
+      description: `Услуга: ${service.title}`,
     });
-    setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
-  const services = [
-    {
-      icon: "Target",
-      title: "Таргетированная реклама",
-      description: "Настройка и ведение эффективных рекламных кампаний в социальных сетях"
-    },
-    {
-      icon: "Layout",
-      title: "Контент-менеджмент",
-      description: "Создание качественного контента и управление публикациями"
-    },
-    {
-      icon: "BarChart3",
-      title: "Аналитика и отчетность",
-      description: "Глубокий анализ показателей и регулярные детальные отчеты"
-    },
-    {
-      icon: "Users",
-      title: "Комьюнити-менеджмент",
-      description: "Работа с аудиторией, модерация и повышение вовлеченности"
+  const getPlatformIcon = (platform: string) => {
+    switch(platform) {
+      case 'telegram': return 'MessageCircle';
+      case 'vk': return 'Mail';
+      case 'youtube': return 'Youtube';
+      default: return 'Users';
     }
-  ];
-
-  const pricingPlans = [
-    {
-      name: "Старт",
-      price: "25 000",
-      description: "Идеально для начинающих проектов",
-      features: [
-        "3 публикации в неделю",
-        "Базовая аналитика",
-        "Работа с 2 соцсетями",
-        "Оперативная поддержка",
-        "Ежемесячный отчет"
-      ],
-      popular: false
-    },
-    {
-      name: "Бизнес",
-      price: "50 000",
-      description: "Оптимальное решение для растущих компаний",
-      features: [
-        "7 публикаций в неделю",
-        "Расширенная аналитика",
-        "Работа с 4 соцсетями",
-        "Таргетированная реклама",
-        "Конкурсы и активности",
-        "Еженедельные отчеты",
-        "Приоритетная поддержка"
-      ],
-      popular: true
-    },
-    {
-      name: "Премиум",
-      price: "100 000",
-      description: "Максимальный охват и профессиональный подход",
-      features: [
-        "Ежедневные публикации",
-        "Premium аналитика",
-        "Работа со всеми соцсетями",
-        "Полное ведение рекламы",
-        "Influencer-маркетинг",
-        "Брендинг и дизайн",
-        "Реал-тайм отчетность",
-        "Персональный менеджер 24/7"
-      ],
-      popular: false
-    }
-  ];
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-transparent"></div>
-        <div className="container mx-auto px-4 py-20 lg:py-32 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="animate-fade-in">
-              <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">SMM агентство</Badge>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Превратим ваши социальные сети в{' '}
-                <span className="text-primary">мощный инструмент продаж</span>
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Профессиональное управление социальными сетями для вашего бизнеса. 
-                Увеличиваем охват, вовлеченность и конверсию через комплексный подход к SMM.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="text-lg px-8" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-                  Получить консультацию
-                  <Icon name="ArrowRight" className="ml-2" size={20} />
-                </Button>
-                <Button size="lg" variant="outline" className="text-lg px-8" onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}>
-                  Посмотреть тарифы
-                </Button>
-              </div>
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-primary mb-1">INFORMATOR MEDIA</h1>
+              <p className="text-sm text-muted-foreground">SMM-специалист</p>
             </div>
-            <div className="animate-slide-in lg:order-last">
-              <img 
-                src="https://cdn.poehali.dev/projects/fb9d21c8-11db-4b4b-a3e5-7668fa83d911/files/08070648-04a0-4855-ab0e-60249a88caef.jpg" 
-                alt="SMM Marketing Dashboard"
-                className="rounded-2xl shadow-2xl w-full object-cover"
-              />
+            <div className="flex items-center gap-3">
+              <Button size="icon" variant="outline" className="rounded-full border-primary/50 hover:bg-primary hover:text-primary-foreground">
+                <Icon name="Youtube" size={20} />
+              </Button>
+              <Button size="icon" variant="outline" className="rounded-full border-primary/50 hover:bg-primary hover:text-primary-foreground">
+                <Icon name="MessageCircle" size={20} />
+              </Button>
+              <Button size="icon" variant="outline" className="rounded-full border-primary/50 hover:bg-primary hover:text-primary-foreground">
+                <Icon name="Send" size={20} />
+              </Button>
+              <select className="bg-card border border-primary/50 text-foreground rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                <option>Темная биржа</option>
+              </select>
             </div>
           </div>
-        </div>
-      </section>
 
-      <section id="services" className="py-20 lg:py-28 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-secondary/10 text-secondary hover:bg-secondary/20">Наши услуги</Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              Комплексный подход к SMM
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Мы предоставляем полный спектр услуг для эффективного продвижения в социальных сетях
-            </p>
+          <div className="relative mb-6">
+            <Input 
+              type="search"
+              placeholder="Найти услугу..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-4 pr-12 h-12 bg-card border-primary/50 text-foreground placeholder:text-muted-foreground focus:border-primary"
+            />
+            <Button 
+              size="icon" 
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              <Icon name="Search" size={20} />
+            </Button>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <Card key={index} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2">
-                <CardHeader>
-                  <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                    <Icon name={service.icon} size={28} className="text-primary" />
-                  </div>
-                  <CardTitle className="text-xl">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{service.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <section id="pricing" className="py-20 lg:py-28 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-primary/10 text-primary hover:bg-primary/20">Тарифы</Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              Выберите оптимальный пакет
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Прозрачные цены без скрытых платежей. Все тарифы включают персональную поддержку
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {pricingPlans.map((plan, index) => (
-              <Card 
-                key={index} 
-                className={`relative hover:shadow-xl transition-all duration-300 ${
-                  plan.popular ? 'border-primary border-2 shadow-lg scale-105' : 'border-2'
+          <div className="flex flex-wrap gap-2">
+            {filters.map((filter) => (
+              <Button
+                key={filter}
+                variant={activeFilter === filter ? "default" : "outline"}
+                onClick={() => setActiveFilter(filter)}
+                className={`rounded-full border-primary/50 ${
+                  activeFilter === filter 
+                    ? 'bg-primary text-primary-foreground' 
+                    : 'bg-transparent text-primary hover:bg-primary/10'
                 }`}
               >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-primary text-primary-foreground px-4 py-1 text-sm">
-                      Популярный выбор
-                    </Badge>
-                  </div>
-                )}
-                <CardHeader className="text-center pb-8 pt-8">
-                  <CardTitle className="text-2xl mb-2">{plan.name}</CardTitle>
-                  <CardDescription className="mb-4">{plan.description}</CardDescription>
-                  <div className="mt-4">
-                    <span className="text-5xl font-bold">{plan.price}</span>
-                    <span className="text-muted-foreground ml-2">₽/мес</span>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {plan.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-start gap-3">
-                      <Icon name="CheckCircle2" size={20} className="text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-sm leading-relaxed">{feature}</span>
-                    </div>
-                  ))}
-                </CardContent>
-                <CardFooter className="pt-6">
-                  <Button 
-                    className="w-full" 
-                    size="lg"
-                    variant={plan.popular ? "default" : "outline"}
-                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                  >
-                    Выбрать тариф
-                  </Button>
-                </CardFooter>
-              </Card>
+                {filter}
+              </Button>
             ))}
           </div>
         </div>
-      </section>
+      </header>
 
-      <section id="contact" className="py-20 lg:py-28 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <Badge className="mb-4 bg-secondary/10 text-secondary hover:bg-secondary/20">Связаться с нами</Badge>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                Начните развитие уже сегодня
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Оставьте заявку, и мы свяжемся с вами для обсуждения деталей сотрудничества
-              </p>
-            </div>
-            <Card className="border-2 shadow-lg">
-              <CardContent className="pt-6">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Имя *</label>
-                      <Input 
-                        placeholder="Иван Иванов" 
-                        value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        required
-                        className="h-12"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Телефон *</label>
-                      <Input 
-                        type="tel"
-                        placeholder="+7 (999) 123-45-67" 
-                        value={formData.phone}
-                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                        required
-                        className="h-12"
-                      />
-                    </div>
+      <main className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredServices.map((service) => (
+            <Card 
+              key={service.id} 
+              className="bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 overflow-hidden group"
+            >
+              <div className="bg-primary/90 p-6 flex items-center justify-center">
+                <Icon name={getPlatformIcon(service.platform)} size={48} className="text-primary-foreground" />
+              </div>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-semibold text-foreground leading-tight min-h-[3rem]">
+                  {service.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-sm text-muted-foreground">от</span>
+                    <span className="text-3xl font-bold text-primary">
+                      {service.priceFrom.toLocaleString()}
+                    </span>
+                    <span className="text-xl text-primary">{service.priceUnit}</span>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Email *</label>
-                    <Input 
-                      type="email"
-                      placeholder="info@company.ru" 
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      required
-                      className="h-12"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Сообщение</label>
-                    <Textarea 
-                      placeholder="Расскажите о вашем проекте и задачах..." 
-                      value={formData.message}
-                      onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      rows={5}
-                      className="resize-none"
-                    />
-                  </div>
-                  <Button type="submit" size="lg" className="w-full text-lg">
-                    Отправить заявку
-                    <Icon name="Send" className="ml-2" size={20} />
-                  </Button>
-                </form>
+                  <p className="text-xs text-muted-foreground">{service.details}</p>
+                </div>
+                <Button 
+                  onClick={() => handleOrder(service)}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                >
+                  <Icon name="ShoppingCart" size={16} className="mr-2" />
+                  Заказать
+                </Button>
               </CardContent>
             </Card>
-          </div>
+          ))}
         </div>
-      </section>
 
-      <footer className="bg-gray-900 text-gray-300 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <h3 className="text-white font-bold text-xl mb-4">SMM Агентство</h3>
-              <p className="text-sm leading-relaxed">
-                Профессиональное продвижение в социальных сетях для вашего бизнеса
-              </p>
-            </div>
-            <div>
-              <h4 className="text-white font-semibold mb-4">Контакты</h4>
-              <div className="space-y-2 text-sm">
-                <p className="flex items-center gap-2">
-                  <Icon name="Mail" size={16} />
-                  info@smm-agency.ru
-                </p>
-                <p className="flex items-center gap-2">
-                  <Icon name="Phone" size={16} />
-                  +7 (999) 123-45-67
-                </p>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-white font-semibold mb-4">Социальные сети</h4>
-              <div className="flex gap-4">
-                <a href="#" className="hover:text-primary transition-colors">
-                  <Icon name="Facebook" size={24} />
-                </a>
-                <a href="#" className="hover:text-primary transition-colors">
-                  <Icon name="Instagram" size={24} />
-                </a>
-                <a href="#" className="hover:text-primary transition-colors">
-                  <Icon name="Twitter" size={24} />
-                </a>
-                <a href="#" className="hover:text-primary transition-colors">
-                  <Icon name="Linkedin" size={24} />
-                </a>
-              </div>
-            </div>
+        {filteredServices.length === 0 && (
+          <div className="text-center py-16">
+            <Icon name="Search" size={64} className="mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-xl font-semibold text-foreground mb-2">Услуги не найдены</h3>
+            <p className="text-muted-foreground">Попробуйте изменить параметры поиска</p>
           </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-sm">
-            <p>© 2024 SMM Агентство. Все права защищены.</p>
-          </div>
+        )}
+      </main>
+
+      <footer className="bg-card/50 border-t border-border mt-16 py-8">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            © 2024 INFORMATOR MEDIA. Все права защищены.
+          </p>
         </div>
       </footer>
     </div>
