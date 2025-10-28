@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
+import useEmblaCarousel from 'embla-carousel-react';
 
 interface Service {
   id: number;
@@ -554,53 +555,7 @@ const Index = () => {
           </div>
         )}
 
-        <section className="mt-20 mb-12">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Отзывы клиентов</h2>
-            <p className="text-muted-foreground">Более 310 положительных отзывов</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              { name: 'igorger', text: 'Все супер качественно. Рекомендую', service: 'Telegram' },
-              { name: 'igorger', text: 'Все сделано качественно и быстро. Рекомендую.', service: 'Telegram' },
-              { name: 'DrunkDuck26', text: 'Все отлично, спасибо. работа была взята в работу мгновенно и оперативно выполнена', service: 'Instagram' },
-              { name: 'Alexey_Zaitsev', text: 'Решил воспользоваться услугами Информатора по холодной рассылке и не прогадал! С первой же встречи понял — передо мной настоящий профессионал.', service: 'ВКонтакте' },
-              { name: 'idei-banan', text: 'Спасибо! Быстро и качественно <3', service: 'Telegram' },
-              { name: 'Halina_design', text: 'Четко, быстро, рекомендую', service: 'Instagram' },
-              { name: 'yawno', text: 'Спасибо! Все супер!', service: 'Instagram' },
-              { name: 'gryaznov8', text: 'Советую данного специалиста, быстро выполнил поставленную задачу и предоставил отчет. Спасибо.', service: 'ВКонтакте' },
-              { name: 'artesponomarev', text: 'Всё супер!', service: 'Instagram' },
-              { name: 'saruman28091994', text: 'Все прошло отлично', service: 'Instagram' },
-              { name: 'sofia364', text: 'Потрясающий специалист, идеально выполнил заказ! Быстро, качественно, надежно. Советуем всем, таких профи мало. Будем обращаться вновь!', service: 'Instagram' },
-              { name: 'Slimliu', text: 'Все понравилось. Все договоренности исполнены', service: 'Instagram' }
-            ].map((review, index) => (
-              <Card 
-                key={index}
-                className="bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 p-4 opacity-0 animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s`, animationFillMode: 'forwards' }}
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-primary font-bold">{review.name[0].toUpperCase()}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="font-semibold text-sm text-foreground truncate">{review.name}</p>
-                      <Icon name="CheckCircle2" size={14} className="text-primary flex-shrink-0" />
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-2">{review.service}</p>
-                    <p className="text-sm text-foreground leading-relaxed">{review.text}</p>
-                    <div className="flex gap-0.5 mt-2">
-                      {[1,2,3,4,5].map(star => (
-                        <Icon key={star} name="Star" size={12} className="text-primary fill-primary" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </section>
+        <ReviewsCarousel />
       </main>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -726,6 +681,114 @@ const Index = () => {
       </footer>
       </div>
     </div>
+  );
+};
+
+const ReviewsCarousel = () => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true });
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const autoplay = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 3000);
+
+    return () => clearInterval(autoplay);
+  }, [emblaApi]);
+
+  const reviews = [
+    { name: 'igorger', text: 'Все супер качественно. Рекомендую', service: 'Telegram' },
+    { name: 'igorger', text: 'Все сделано качественно и быстро. Рекомендую.', service: 'Telegram' },
+    { name: 'DrunkDuck26', text: 'Все отлично, спасибо. работа была взята в работу мгновенно и оперативно выполнена', service: 'Instagram' },
+    { name: 'Alexey_Zaitsev', text: 'Решил воспользоваться услугами Информатора по холодной рассылке и не прогадал!', service: 'ВКонтакте' },
+    { name: 'idei-banan', text: 'Спасибо! Быстро и качественно <3', service: 'Telegram' },
+    { name: 'Halina_design', text: 'Четко, быстро, рекомендую', service: 'Instagram' },
+    { name: 'yawno', text: 'Спасибо! Все супер!', service: 'Instagram' },
+    { name: 'gryaznov8', text: 'Советую данного специалиста, быстро выполнил поставленную задачу и предоставил отчет. Спасибо.', service: 'ВКонтакте' },
+    { name: 'artesponomarev', text: 'Всё супер!', service: 'Instagram' },
+    { name: 'saruman28091994', text: 'Все прошло отлично', service: 'Instagram' },
+    { name: 'sofia364', text: 'Потрясающий специалист, идеально выполнил заказ! Быстро, качественно, надежно.', service: 'Instagram' },
+    { name: 'Slimliu', text: 'Все понравилось. Все договоренности исполнены', service: 'Instagram' },
+    { name: 'aminkagubasheva', text: 'Всё прошло отлично, исполнителя рекомендую!', service: 'Instagram' },
+    { name: 'akinshinanadi', text: 'Мне нужны были живые подписчики (не боты и индусы арабы). Я получила больше чем мы договаривались!', service: 'Instagram' },
+    { name: 'igorger', text: 'Всё хорошо, рекомендую', service: 'Telegram' },
+    { name: 'qpalk', text: 'Очень лёгкая и понятная анкета к заполнению, отзывы не читала, но никакого страха за потраченные средства не было.', service: 'Instagram' },
+    { name: 'alhalferova', text: 'Все отлично и быстро! Результат достигнут! Спасибо!', service: 'Instagram' },
+    { name: 'evgenydunaevsky', text: 'Всё очень оперативно и качественно!', service: 'Telegram' },
+    { name: 'ekaterinachulkina96', text: 'Спасибо за выполненную работу!', service: 'Instagram' },
+    { name: 'zabelin-va', text: 'всё сделано, спасибо!', service: 'Instagram' },
+    { name: 'Kinaction', text: 'Оперативно)', service: 'Telegram' },
+    { name: 'igorger', text: 'Все супер как всегда. Рекомендую.', service: 'Telegram' },
+    { name: 'zabelin-va', text: 'Спасибо', service: 'Instagram' },
+    { name: 'igorger', text: 'Все отлично. Закажем снова.', service: 'Telegram' },
+    { name: '89049833472', text: 'Заказ оперативно, быстро, надо было раньше решаться мне)', service: 'Telegram' },
+    { name: 'zabelin-va', text: 'сделано в срок, все отлично!', service: 'Instagram' },
+    { name: 'zabelin-va', text: 'Всё окей, быстро', service: 'Instagram' },
+    { name: 'Daria1511', text: 'Задача выполнена отлично, учтены все временные рамки, но при этом подписчики пришли не в раз, что очень важно!', service: 'Instagram' },
+    { name: 'ZorroZodd', text: 'Работа сделана качественно, исполнитель задавал уточняющие вопросы, которые помогли достичь более точного результата', service: 'Telegram' },
+    { name: 'yulybai', text: 'Все сделали, так как нужно. Быстро ответили на сообщение и сразу приступили к выполнению заказа. Обращусь ещё.', service: 'Instagram' },
+    { name: 'igorger', text: 'Все супер. Как и заказывали.', service: 'Telegram' },
+    { name: 'njf4xjbzq9', text: 'Отлично сработали. Лучший сервис. Рекомендую', service: 'Instagram' },
+    { name: 'inagherciu94', text: 'Great job!', service: 'Instagram' },
+    { name: 'artshop995', text: 'обращаюсь повторно, как и в первый раз, все сделано быстро, качественно, и даже с бонусом, что очень приятно. Рекомендую.', service: 'Instagram' },
+    { name: 'revers31b', text: 'Заказ выполнен полностью и в срок. Всё понравилось, буду делать ещё заказы у этого исполнителя)', service: 'Trovo' },
+    { name: 'rvcd4yyn9d', text: 'Исполнитель порядочней, учел мои пожелания, работа выполнена.', service: 'Instagram' },
+    { name: 'igorger', text: 'Все отлично. Рекомендую', service: 'Telegram' },
+    { name: 'inagherciu94', text: 'Thank you so much for a great job!', service: 'Instagram' },
+    { name: 'inagherciu94', text: 'Much appreciated!', service: 'Instagram' },
+    { name: 'inagherciu94', text: 'Great job, as always!', service: 'Instagram' },
+    { name: 'inagherciu94', text: 'Thank you!', service: 'Instagram' },
+    { name: 'tatiana199621', text: 'Отличный исполнитель, подписчики супер качества, никаких ботов с Индии, которые всех бесят) работаем уже второй раз, приятный бонус 10000 просмотров на риис в конце работы) рекомендую', service: 'Instagram' },
+    { name: 'tatiana199621', text: 'Быстро и качественно справился с задачей! Рекомендую', service: 'Instagram' },
+    { name: 'vip_pattaya', text: 'Всё сделано круто. будем ещё обращаться, спасибо', service: 'Instagram' },
+    { name: 'zabelin-va', text: 'всё окей, по договорённости', service: 'Instagram' },
+    { name: 'inagherciu94', text: 'Все было сделано быстро и качественно!', service: 'Instagram' }
+  ];
+
+  return (
+    <section className=\"mt-20 mb-12\">
+      <div className=\"text-center mb-8\">
+        <h2 className=\"text-3xl font-bold text-foreground mb-2\">Отзывы клиентов</h2>
+        <p className=\"text-muted-foreground\">Более 310 положительных отзывов</p>
+      </div>
+      
+      <div className=\"overflow-hidden\" ref={emblaRef}>
+        <div className=\"flex gap-4\" style={{ touchAction: 'pan-y' }}>
+          {reviews.map((review, index) => (
+            <div 
+              key={index}
+              className=\"flex-[0_0_300px] min-w-0\"
+            >
+              <Card className=\"bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 p-4 h-full\">
+                <div className=\"flex items-start gap-3\">
+                  <div className=\"w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0\">
+                    <span className=\"text-primary font-bold\">{review.name[0].toUpperCase()}</span>
+                  </div>
+                  <div className=\"flex-1 min-w-0\">
+                    <div className=\"flex items-center gap-2 mb-1\">
+                      <p className=\"font-semibold text-sm text-foreground truncate\">{review.name}</p>
+                      <Icon name=\"CheckCircle2\" size={14} className=\"text-primary flex-shrink-0\" />
+                    </div>
+                    <p className=\"text-xs text-muted-foreground mb-2\">{review.service}</p>
+                    <p className=\"text-sm text-foreground leading-relaxed line-clamp-3\">{review.text}</p>
+                    <div className=\"flex gap-0.5 mt-2\">
+                      {[1,2,3,4,5].map(star => (
+                        <Icon key={star} name=\"Star\" size={12} className=\"text-primary fill-primary\" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <div className=\"text-center mt-6\">
+        <p className=\"text-xs text-muted-foreground\">Автоматическая прокрутка • Потяните для просмотра</p>
+      </div>
+    </section>
   );
 };
 
