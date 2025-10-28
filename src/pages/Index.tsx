@@ -228,15 +228,6 @@ const Index = () => {
               <p className="text-sm text-muted-foreground">SMM-специалист</p>
             </div>
             <div className="flex items-center gap-3">
-              <Button size="icon" variant="outline" className="rounded-full border-primary/50 hover:bg-primary hover:text-primary-foreground">
-                <Icon name="Youtube" size={20} />
-              </Button>
-              <Button size="icon" variant="outline" className="rounded-full border-primary/50 hover:bg-primary hover:text-primary-foreground">
-                <Icon name="MessageCircle" size={20} />
-              </Button>
-              <Button size="icon" variant="outline" className="rounded-full border-primary/50 hover:bg-primary hover:text-primary-foreground">
-                <Icon name="Send" size={20} />
-              </Button>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" className="relative border-primary/50 hover:bg-primary hover:text-primary-foreground">
