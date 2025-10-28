@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -32,6 +32,22 @@ const Index = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle('light', savedTheme === 'light');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('light', newTheme === 'light');
+  };
 
   const services: Service[] = [
     {
@@ -314,9 +330,13 @@ const Index = () => {
                   </div>
                 </SheetContent>
               </Sheet>
-              <select className="bg-card border border-primary/50 text-foreground rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                <option>Темная биржа</option>
-              </select>
+              <Button 
+                variant="outline" 
+                onClick={toggleTheme}
+                className="border-primary/50 hover:bg-primary hover:text-primary-foreground"
+              >
+                <Icon name={theme === 'dark' ? 'Sun' : 'Moon'} size={20} />
+              </Button>
             </div>
           </div>
 
