@@ -508,22 +508,38 @@ const Index = () => {
                   <Icon name="Clock" size={14} className="text-primary" />
                   <span>Выполнение: {service.deliveryTime}</span>
                 </div>
-                <div className="flex gap-2">
-                  <Button 
-                    onClick={() => openServiceDetails(service)}
-                    variant="outline"
-                    className="flex-1 border-primary/50 text-primary hover:bg-primary/10"
+                <div className="flex flex-col gap-2">
+                  <a
+                    href="https://t.me/Informator_one"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full"
                   >
-                    <Icon name="Info" size={16} className="mr-2" />
-                    Подробнее
-                  </Button>
-                  <Button 
-                    onClick={() => addToCart(service)}
-                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-                  >
-                    <Icon name="ShoppingCart" size={16} className="mr-2" />
-                    В корзину
-                  </Button>
+                    <Button 
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold hover:shadow-[0_0_20px_rgba(255,107,53,0.5)] transition-all duration-300"
+                    >
+                      <Icon name="Send" size={16} className="mr-2" />
+                      Связаться с менеджером
+                    </Button>
+                  </a>
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={() => openServiceDetails(service)}
+                      variant="outline"
+                      className="flex-1 border-primary/50 text-primary hover:bg-primary/10"
+                    >
+                      <Icon name="Info" size={16} className="mr-2" />
+                      Подробнее
+                    </Button>
+                    <Button 
+                      onClick={() => addToCart(service)}
+                      variant="outline"
+                      className="flex-1 border-primary/50 text-primary hover:bg-primary/10"
+                    >
+                      <Icon name="ShoppingCart" size={16} className="mr-2" />
+                      В корзину
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -613,20 +629,47 @@ const Index = () => {
 
       <footer className="bg-card/50 border-t border-border mt-16 py-12">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-center space-y-6">
+          <div className="flex flex-col items-center justify-center space-y-8">
             <div className="text-center">
               <h3 className="text-xl font-bold text-primary mb-2">Связаться с нами</h3>
               <p className="text-sm text-muted-foreground">Готовы обсудить ваш проект? Напишите нам!</p>
             </div>
             <a 
-              href="https://t.me/Stoimostreklama"
+              href="https://t.me/Informator_one"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-primary/50"
+              className="flex items-center gap-3 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-[0_0_20px_rgba(255,107,53,0.5)]"
             >
               <Icon name="Send" size={24} />
               <span className="font-semibold text-lg">Написать в Telegram</span>
             </a>
+            
+            <div className="w-full max-w-4xl">
+              <h4 className="text-center text-sm font-semibold text-muted-foreground mb-4">Принимаем к оплате</h4>
+              <div className="flex flex-wrap items-center justify-center gap-6">
+                <div className="flex items-center gap-2 px-4 py-3 bg-card/80 rounded-lg border border-border/50 hover:border-primary/50 transition-all duration-300">
+                  <Icon name="CreditCard" size={24} className="text-primary" />
+                  <span className="text-sm font-medium text-foreground">Российские карты</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-3 bg-card/80 rounded-lg border border-border/50 hover:border-primary/50 transition-all duration-300">
+                  <span className="text-2xl">₿</span>
+                  <span className="text-sm font-medium text-foreground">Bitcoin</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-3 bg-card/80 rounded-lg border border-border/50 hover:border-primary/50 transition-all duration-300">
+                  <span className="text-2xl">Ξ</span>
+                  <span className="text-sm font-medium text-foreground">Ethereum</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-3 bg-card/80 rounded-lg border border-border/50 hover:border-primary/50 transition-all duration-300">
+                  <Icon name="DollarSign" size={24} className="text-primary" />
+                  <span className="text-sm font-medium text-foreground">USDT</span>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-3 bg-card/80 rounded-lg border border-border/50 hover:border-primary/50 transition-all duration-300">
+                  <Icon name="Wallet" size={24} className="text-primary" />
+                  <span className="text-sm font-medium text-foreground">ЮMoney</span>
+                </div>
+              </div>
+            </div>
+
             <p className="text-sm text-muted-foreground">
               © 2024 INFORMATOR MEDIA. Все права защищены.
             </p>
