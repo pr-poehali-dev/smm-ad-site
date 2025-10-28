@@ -493,11 +493,26 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
-      <footer className="bg-card/50 border-t border-border mt-16 py-8">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-muted-foreground">
-            © 2024 INFORMATOR MEDIA. Все права защищены.
-          </p>
+      <footer className="bg-card/50 border-t border-border mt-16 py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col items-center justify-center space-y-6">
+            <div className="text-center">
+              <h3 className="text-xl font-bold text-primary mb-2">Связаться с нами</h3>
+              <p className="text-sm text-muted-foreground">Готовы обсудить ваш проект? Напишите нам!</p>
+            </div>
+            <a 
+              href="https://t.me/Stoimostreklama"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-primary/50"
+            >
+              <Icon name="Send" size={24} />
+              <span className="font-semibold text-lg">Написать в Telegram</span>
+            </a>
+            <p className="text-sm text-muted-foreground">
+              © 2024 INFORMATOR MEDIA. Все права защищены.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
