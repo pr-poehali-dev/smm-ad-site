@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 
@@ -14,12 +17,21 @@ interface Service {
   details: string;
   icon: string;
   category: string;
+  description?: string;
+}
+
+interface CartItem {
+  service: Service;
+  quantity: number;
 }
 
 const Index = () => {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('Все');
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const services: Service[] = [
     {
@@ -40,7 +52,8 @@ const Index = () => {
       priceUnit: '₽',
       details: '1 000₽ за 100 подп.',
       icon: 'MessageCircle',
-      category: 'Подписчики'
+      category: 'Подписчики',
+      description: 'Живые подписчики для вашего Telegram канала. Гарантия качества и безопасности аккаунта.'
     },
     {
       id: 3,
@@ -50,7 +63,8 @@ const Index = () => {
       priceUnit: '₽',
       details: '1 000₽ за 100 сообщ.',
       icon: 'MessageSquare',
-      category: 'Разное'
+      category: 'Разное',
+      description: 'Массовая рассылка сообщений по личным чатам участников групп ВКонтакте.'
     },
     {
       id: 4,
@@ -154,11 +168,45 @@ const Index = () => {
     return matchesSearch && matchesFilter;
   });
 
-  const handleOrder = (service: Service) => {
-    toast({
-      title: "Заказ оформлен!",
-      description: `Услуга: ${service.title}`,
+  const addToCart = (service: Service) => {
+    setCart(prev => {
+      const existing = prev.find(item => item.service.id === service.id);
+      if (existing) {
+        return prev.map(item => 
+          item.service.id === service.id 
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, { service, quantity: 1 }];
     });
+    toast({
+      title: "Добавлено в корзину!",
+      description: service.title,
+    });
+  };
+
+  const removeFromCart = (serviceId: number) => {
+    setCart(prev => prev.filter(item => item.service.id !== serviceId));
+  };
+
+  const updateQuantity = (serviceId: number, quantity: number) => {
+    if (quantity <= 0) {
+      removeFromCart(serviceId);
+      return;
+    }
+    setCart(prev => prev.map(item => 
+      item.service.id === serviceId ? { ...item, quantity } : item
+    ));
+  };
+
+  const getTotalPrice = () => {
+    return cart.reduce((sum, item) => sum + (item.service.priceFrom * item.quantity), 0);
+  };
+
+  const openServiceDetails = (service: Service) => {
+    setSelectedService(service);
+    setIsDialogOpen(true);
   };
 
   const getPlatformIcon = (platform: string) => {
@@ -189,6 +237,92 @@ const Index = () => {
               <Button size="icon" variant="outline" className="rounded-full border-primary/50 hover:bg-primary hover:text-primary-foreground">
                 <Icon name="Send" size={20} />
               </Button>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="relative border-primary/50 hover:bg-primary hover:text-primary-foreground">
+                    <Icon name="ShoppingCart" size={20} />
+                    {cart.length > 0 && (
+                      <Badge className="absolute -top-2 -right-2 bg-primary text-primary-foreground px-2 py-0.5 text-xs">
+                        {cart.length}
+                      </Badge>
+                    )}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="bg-card border-l border-border w-full sm:max-w-lg">
+                  <SheetHeader>
+                    <SheetTitle className="text-primary">Корзина</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-6 space-y-4">
+                    {cart.length === 0 ? (
+                      <div className="text-center py-16">
+                        <Icon name="ShoppingCart" size={64} className="mx-auto mb-4 text-muted-foreground" />
+                        <p className="text-muted-foreground">Корзина пуста</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+                          {cart.map(item => (
+                            <Card key={item.service.id} className="bg-muted/20 border-border">
+                              <CardContent className="p-4">
+                                <div className="flex items-start justify-between mb-3">
+                                  <div className="flex-1">
+                                    <h4 className="text-sm font-semibold text-foreground mb-1">{item.service.title}</h4>
+                                    <p className="text-xs text-muted-foreground">{item.service.details}</p>
+                                  </div>
+                                  <Button 
+                                    size="icon" 
+                                    variant="ghost" 
+                                    onClick={() => removeFromCart(item.service.id)}
+                                    className="ml-2 h-8 w-8"
+                                  >
+                                    <Icon name="X" size={16} />
+                                  </Button>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <Button 
+                                      size="icon" 
+                                      variant="outline" 
+                                      onClick={() => updateQuantity(item.service.id, item.quantity - 1)}
+                                      className="h-8 w-8 border-primary/50"
+                                    >
+                                      <Icon name="Minus" size={14} />
+                                    </Button>
+                                    <span className="text-sm font-semibold w-8 text-center">{item.quantity}</span>
+                                    <Button 
+                                      size="icon" 
+                                      variant="outline" 
+                                      onClick={() => updateQuantity(item.service.id, item.quantity + 1)}
+                                      className="h-8 w-8 border-primary/50"
+                                    >
+                                      <Icon name="Plus" size={14} />
+                                    </Button>
+                                  </div>
+                                  <span className="text-lg font-bold text-primary">
+                                    {(item.service.priceFrom * item.quantity).toLocaleString()} ₽
+                                  </span>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                        <div className="border-t border-border pt-4 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <span className="text-lg font-semibold">Итого:</span>
+                            <span className="text-2xl font-bold text-primary">
+                              {getTotalPrice().toLocaleString()} ₽
+                            </span>
+                          </div>
+                          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                            Оформить заказ
+                            <Icon name="ArrowRight" size={20} className="ml-2" />
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </SheetContent>
+              </Sheet>
               <select className="bg-card border border-primary/50 text-foreground rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
                 <option>Темная биржа</option>
               </select>
@@ -256,13 +390,23 @@ const Index = () => {
                   </div>
                   <p className="text-xs text-muted-foreground">{service.details}</p>
                 </div>
-                <Button 
-                  onClick={() => handleOrder(service)}
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-                >
-                  <Icon name="ShoppingCart" size={16} className="mr-2" />
-                  Заказать
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => openServiceDetails(service)}
+                    variant="outline"
+                    className="flex-1 border-primary/50 text-primary hover:bg-primary/10"
+                  >
+                    <Icon name="Info" size={16} className="mr-2" />
+                    Подробнее
+                  </Button>
+                  <Button 
+                    onClick={() => addToCart(service)}
+                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                  >
+                    <Icon name="ShoppingCart" size={16} className="mr-2" />
+                    В корзину
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
@@ -276,6 +420,78 @@ const Index = () => {
           </div>
         )}
       </main>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="bg-card border-2 border-primary/50 text-foreground">
+          {selectedService && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl text-primary flex items-center gap-3">
+                  <Icon name={getPlatformIcon(selectedService.platform)} size={32} className="text-primary" />
+                  {selectedService.title}
+                </DialogTitle>
+                <DialogDescription className="text-muted-foreground mt-2">
+                  {selectedService.description || 'Качественная SMM услуга для вашего бизнеса'}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-6 mt-4">
+                <div className="bg-muted/20 rounded-lg p-4 border border-border">
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-sm text-muted-foreground">Цена от</span>
+                    <span className="text-4xl font-bold text-primary">
+                      {selectedService.priceFrom.toLocaleString()}
+                    </span>
+                    <span className="text-2xl text-primary">{selectedService.priceUnit}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{selectedService.details}</p>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <Icon name="CheckCircle2" size={20} className="text-primary mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold">Быстрый старт</p>
+                      <p className="text-xs text-muted-foreground">Начало работы в течение 24 часов</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Icon name="CheckCircle2" size={20} className="text-primary mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold">Гарантия качества</p>
+                      <p className="text-xs text-muted-foreground">Все услуги выполняются профессионалами</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Icon name="CheckCircle2" size={20} className="text-primary mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold">Поддержка 24/7</p>
+                      <p className="text-xs text-muted-foreground">Всегда на связи для решения вопросов</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-3 pt-4">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setIsDialogOpen(false)}
+                    className="flex-1 border-primary/50"
+                  >
+                    Закрыть
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      addToCart(selectedService);
+                      setIsDialogOpen(false);
+                    }}
+                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
+                  >
+                    <Icon name="ShoppingCart" size={18} className="mr-2" />
+                    Добавить в корзину
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <footer className="bg-card/50 border-t border-border mt-16 py-8">
         <div className="container mx-auto px-4 text-center">
